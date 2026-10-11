@@ -1,0 +1,13 @@
+#include "Annotation.hpp"
+
+void Annotation::add(double x, double y, const std::string& text) {
+    items.push_back({x, y, text});
+}
+
+void Annotation::clear() {
+    items.clear();
+}
+
+const std::vector<AnnotationItem>& Annotation::getItems() const {
+    return items;
+}
