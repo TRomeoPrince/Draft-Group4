@@ -1,0 +1,8 @@
+build/
+.vscode/
+*.exe
+*.out
+*.o
+*.obj
+*.svg
+!data/output/README.md
