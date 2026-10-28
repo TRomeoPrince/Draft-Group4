@@ -181,3 +181,30 @@ on GitHub for pushes and pull requests.
 **Note:** These files demonstrate the current implementations; the standalone
 modules still require further integration and additional edge-case tests before
 this reference library should be considered production-ready.
+
+## Complete per-module examples and tests
+
+Every one of the ten modules now has its own pair of entry-point files:
+
+| Module | Example | Test |
+| --- | --- | --- |
+| DataLoader | `examples/dataloader_example.cpp` | `tests/test_dataloader.cpp` |
+| DataProcessor | `examples/dataprocessor_example.cpp` | `tests/test_dataprocessor.cpp` |
+| Statistics | `examples/statistics_example.cpp` | `tests/test_statistics.cpp` |
+| CountPlot | `examples/countplot_example.cpp` | `tests/test_countplot.cpp` |
+| Histogram | `examples/histogram_example.cpp` | `tests/test_histogram.cpp` |
+| KDEPlot | `examples/kdeplot_example.cpp` | `tests/test_kdeplot.cpp` |
+| Axis | `examples/axis_example.cpp` | `tests/test_axis.cpp` |
+| Annotation | `examples/annotation_example.cpp` | `tests/test_annotation.cpp` |
+| Renderer | `examples/renderer_example.cpp` | `tests/test_renderer.cpp` |
+| ImageExporter | `examples/imageexporter_example.cpp` | `tests/test_imageexporter.cpp` |
+
+The full-library demo (`example.cpp`) and original integration tests (`test_library.cpp` and `test_components.cpp`) are retained.
+
+Build and test:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
