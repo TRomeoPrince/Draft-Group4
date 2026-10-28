@@ -143,3 +143,41 @@ ctest --test-dir build --output-on-failure
 This is deliberately written using only the C++ standard library. SVG is used for image output so the project can demonstrate rendering and image export without requiring a large external graphics dependency.
 
 Weekly reports are intentionally not included in this draft reference repository.
+
+
+## Individual module examples and tests
+
+The original `examples/example.cpp` demonstrates the complete library. The following
+standalone examples make it easier to learn and present individual modules:
+
+- `examples/axis_example.cpp`: numerical axis scaling and ticks.
+- `examples/statistics_example.cpp`: descriptive statistics.
+- `examples/kdeplot_example.cpp`: KDE estimation, SVG rendering, and export to `kde_example.svg`.
+
+After building, run the desired executable from the build folder, or use its
+generator-specific path (for example `build/Debug/kdeplot_example.exe` on Windows).
+
+CTest now runs five separately reported test executables:
+
+| Test | What it covers |
+| --- | --- |
+| `dataviz_tests` | Existing cross-module behavior and rendering checks |
+| `test_kdeplot` | KDE point count, finite nonnegative densities, ordering, bandwidth, invalid inputs |
+| `test_axis` | Scaling, tick spacing, range updates, and invalid inputs |
+| `test_statistics` | Descriptive calculations, sample values, and empty input |
+| `test_components` | Annotation, count plot, histogram, data processing/loading, renderer, SVG export |
+
+Run everything with:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
+
+The `.github/workflows/ci.yml` workflow also builds and runs the test suite
+on GitHub for pushes and pull requests.
+
+**Note:** These files demonstrate the current implementations; the standalone
+modules still require further integration and additional edge-case tests before
+this reference library should be considered production-ready.
