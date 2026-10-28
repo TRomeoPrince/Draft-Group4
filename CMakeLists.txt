@@ -21,12 +21,35 @@ add_library(dataviz
 
 target_include_directories(dataviz PUBLIC include)
 
+# Full-library demo plus standalone examples for individual modules.
 add_executable(dataviz_example examples/example.cpp)
 target_link_libraries(dataviz_example PRIVATE dataviz)
 
+add_executable(kdeplot_example examples/kdeplot_example.cpp)
+target_link_libraries(kdeplot_example PRIVATE dataviz)
+
+add_executable(axis_example examples/axis_example.cpp)
+target_link_libraries(axis_example PRIVATE dataviz)
+
+add_executable(statistics_example examples/statistics_example.cpp)
+target_link_libraries(statistics_example PRIVATE dataviz)
+
 enable_testing()
 
-add_executable(dataviz_tests tests/test_library.cpp)
-target_link_libraries(dataviz_tests PRIVATE dataviz)
+# Each test is independently runnable. Use Debug builds to keep asserts enabled.
+function(add_dataviz_test target source)
+    add_executable(${target} ${source})
+    target_link_libraries(${target} PRIVATE dataviz)
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /UNDEBUG)
+    else()
+        target_compile_options(${target} PRIVATE -UNDEBUG)
+    endif()
+    add_test(NAME ${target} COMMAND ${target})
+endfunction()
 
-add_test(NAME dataviz_tests COMMAND dataviz_tests)
+add_dataviz_test(dataviz_tests tests/test_library.cpp)
+add_dataviz_test(test_kdeplot tests/test_kdeplot.cpp)
+add_dataviz_test(test_axis tests/test_axis.cpp)
+add_dataviz_test(test_statistics tests/test_statistics.cpp)
+add_dataviz_test(test_components tests/test_components.cpp)
