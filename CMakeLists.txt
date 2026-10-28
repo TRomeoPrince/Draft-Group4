@@ -53,3 +53,33 @@ add_dataviz_test(test_kdeplot tests/test_kdeplot.cpp)
 add_dataviz_test(test_axis tests/test_axis.cpp)
 add_dataviz_test(test_statistics tests/test_statistics.cpp)
 add_dataviz_test(test_components tests/test_components.cpp)
+
+# Individual examples and tests for each remaining module.
+add_executable(dataloader_example examples/dataloader_example.cpp)
+target_link_libraries(dataloader_example PRIVATE dataviz)
+add_dataviz_test(test_dataloader tests/test_dataloader.cpp)
+
+add_executable(dataprocessor_example examples/dataprocessor_example.cpp)
+target_link_libraries(dataprocessor_example PRIVATE dataviz)
+add_dataviz_test(test_dataprocessor tests/test_dataprocessor.cpp)
+
+add_executable(countplot_example examples/countplot_example.cpp)
+target_link_libraries(countplot_example PRIVATE dataviz)
+add_dataviz_test(test_countplot tests/test_countplot.cpp)
+
+add_executable(histogram_example examples/histogram_example.cpp)
+target_link_libraries(histogram_example PRIVATE dataviz)
+add_dataviz_test(test_histogram tests/test_histogram.cpp)
+
+add_executable(annotation_example examples/annotation_example.cpp)
+target_link_libraries(annotation_example PRIVATE dataviz)
+add_dataviz_test(test_annotation tests/test_annotation.cpp)
+
+add_executable(renderer_example examples/renderer_example.cpp)
+target_link_libraries(renderer_example PRIVATE dataviz)
+add_dataviz_test(test_renderer tests/test_renderer.cpp)
+
+add_executable(imageexporter_example examples/imageexporter_example.cpp)
+target_link_libraries(imageexporter_example PRIVATE dataviz)
+add_dataviz_test(test_imageexporter tests/test_imageexporter.cpp)
+
