@@ -25,7 +25,7 @@ int main() {
             points, 800, 500, "Student Marks KDE Plot", notes);
         ImageExporter::saveSVG(svg, "kdeplot_example.svg");
 
-        std::cout << "Created kdeplot_example.svg using "
+        std::cout << "Created " << ImageExporter::outputFile("kdeplot_example.svg") << " using "
                   << points.size() << " density points.\n";
     } catch (const std::exception& error) {
         std::cerr << "KDE example failed: " << error.what() << "\n";
