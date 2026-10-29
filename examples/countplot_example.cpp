@@ -23,7 +23,7 @@ int main() {
             counts, 800, 500, "Students by Programme", notes);
         ImageExporter::saveSVG(svg, "countplot_example.svg");
 
-        std::cout << "Created countplot_example.svg for "
+        std::cout << "Created " << ImageExporter::outputFile("countplot_example.svg") << " for "
                   << counts.size() << " programme categories.\n";
     } catch (const std::exception& error) {
         std::cerr << "Count plot example failed: " << error.what() << "\n";

@@ -26,13 +26,15 @@ void checkSavedGraph(const std::string& svg, const std::string& filename,
     assert(svg.find(yLabel) != std::string::npos);
 
     ImageExporter::saveSVG(svg, filename);
-    std::ifstream file(filename);
+    // The exporter routes a plain filename into data/output.
+    const std::string savedPath = ImageExporter::outputFile(filename);
+    std::ifstream file(savedPath);
     assert(file.good());
     std::string saved((std::istreambuf_iterator<char>(file)),
                       std::istreambuf_iterator<char>());
     assert(saved == svg);
     file.close();
-    std::remove(filename.c_str());
+    std::remove(savedPath.c_str());
 }
 
 int main() {

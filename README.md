@@ -27,7 +27,7 @@ axis or write a new SVG exporter in every example.
 include/       Ten public C++ headers
 src/           Ten matching C++ implementation files
 data/input/    sample.csv
-data/output/   For generated images if desired
+data/output/   Default destination for generated SVG images
 examples/      Three complete plot demonstrations plus one all-in-one demo
 tests/         Ten individual module tests plus one integration test
 CMakeLists.txt  Build setup and CTest registration
@@ -80,8 +80,29 @@ On Windows with a multi-configuration generator, executables may be inside
 `build/Debug/`. Launch them with the working directory set to `build/`,
 where CMake has copied `data/input/sample.csv`.
 
-The examples write files such as `histogram_example.svg`, `kdeplot_example.svg`
-and `countplot_example.svg` into the current working directory.
+By default, every graph example saves its SVG inside the repository's
+`data/output/` directory, even when the program runs from `build/` or
+`build/Debug/`. The directory is created automatically if needed.
+
+Examples of generated filenames:
+
+```text
+data/output/
+├── histogram_example.svg
+├── kdeplot_example.svg
+├── countplot_example.svg
+├── complete_histogram.svg
+├── complete_kdeplot.svg
+└── complete_countplot.svg
+```
+
+`ImageExporter::saveSVG(svg, "mygraph.svg")` uses this same default folder.
+If a caller explicitly supplies a directory or absolute path, that location
+is honored instead. `ImageExporter::outputFile("mygraph.svg")` returns the
+actual destination and is useful when displaying or opening a saved file.
+
+The files are created on the computer that runs the program; running GitHub
+Actions does not automatically commit these images into the repository.
 
 ## OOP design notes
 

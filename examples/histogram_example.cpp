@@ -26,7 +26,7 @@ int main() {
             bins, 800, 500, "Student Marks Histogram", notes);
         ImageExporter::saveSVG(svg, "histogram_example.svg");
 
-        std::cout << "Created histogram_example.svg with "
+        std::cout << "Created " << ImageExporter::outputFile("histogram_example.svg") << " with "
                   << bins.size() << " bins.\n";
     } catch (const std::exception& error) {
         std::cerr << "Histogram example failed: " << error.what() << "\n";

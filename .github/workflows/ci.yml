@@ -22,9 +22,9 @@ jobs:
           ./kdeplot_example
           ./countplot_example
           ./complete_library_example
-          test -s histogram_example.svg
-          test -s kdeplot_example.svg
-          test -s countplot_example.svg
-          test -s complete_histogram.svg
-          test -s complete_kdeplot.svg
-          test -s complete_countplot.svg
+          test -s ../data/output/histogram_example.svg
+          test -s ../data/output/kdeplot_example.svg
+          test -s ../data/output/countplot_example.svg
+          test -s ../data/output/complete_histogram.svg
+          test -s ../data/output/complete_kdeplot.svg
+          test -s ../data/output/complete_countplot.svg
