@@ -45,7 +45,9 @@ int main() {
             Renderer::renderKDE(density, 800, 500, "Student Marks Density", notes),
             "complete_kdeplot.svg");
 
-        std::cout << "Created three complete SVG graphs.\n";
+        std::cout << "Created three SVG graphs in "
+                  << ImageExporter::outputFile("complete_histogram.svg")
+                  << " (and the other two SVGs).\n";
     } catch (const std::exception& error) {
         std::cerr << "Full library example failed: " << error.what() << "\n";
         return 1;
