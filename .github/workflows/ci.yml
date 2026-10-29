@@ -1,4 +1,4 @@
-name: C++ Build and Tests
+name: C++ Build, Tests and Graph Examples
 
 on:
   push:
@@ -13,5 +13,18 @@ jobs:
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
       - name: Build
         run: cmake --build build --parallel
-      - name: Run tests
+      - name: Run all module and integration tests
         run: ctest --test-dir build --output-on-failure
+      - name: Run the three graph examples and the full-library example
+        working-directory: build
+        run: |
+          ./histogram_example
+          ./kdeplot_example
+          ./countplot_example
+          ./complete_library_example
+          test -s histogram_example.svg
+          test -s kdeplot_example.svg
+          test -s countplot_example.svg
+          test -s complete_histogram.svg
+          test -s complete_kdeplot.svg
+          test -s complete_countplot.svg

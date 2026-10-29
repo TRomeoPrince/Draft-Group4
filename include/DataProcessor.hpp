@@ -5,8 +5,11 @@
 #include <string>
 #include <vector>
 
+// The data we load may have extra spaces or invalid values.
+// These functions will prepare it before we calculate the graphs.
 class DataProcessor {
 public:
+    // The rest of the library will use this public interface.
     using Table = std::vector<std::vector<std::string>>;
 
     static std::string trim(const std::string& value);

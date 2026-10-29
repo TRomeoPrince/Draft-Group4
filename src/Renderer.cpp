@@ -13,6 +13,21 @@ constexpr double RIGHT = 30.0;
 constexpr double TOP = 55.0;
 constexpr double BOTTOM = 70.0;
 
+
+// Each graph should say what the horizontal and vertical values represent.
+std::string axisLabels(int width, int height,
+                       const std::string& xLabel, const std::string& yLabel) {
+    std::ostringstream svg;
+    svg << "<text x=\"" << width / 2 << "\" y=\"" << (height - 18)
+        << "\" text-anchor=\"middle\" font-size=\"15\""
+        << " font-family=\"sans-serif\">" << xLabel << "</text>\n";
+    svg << "<text x=\"22\" y=\"" << height / 2
+        << "\" transform=\"rotate(-90 22 " << height / 2 << ")\""
+        << " text-anchor=\"middle\" font-size=\"15\""
+        << " font-family=\"sans-serif\">" << yLabel << "</text>\n";
+    return svg.str();
+}
+
 std::string number(double value, int precision = 2) {
     std::ostringstream out;
     out << std::fixed << std::setprecision(precision) << value;
@@ -20,6 +35,7 @@ std::string number(double value, int precision = 2) {
 }
 }
 
+// I keep the plotting margins in one place so the graphs use the same layout.
 std::string Renderer::escapeXML(const std::string& text) {
     std::string result;
 
@@ -140,6 +156,7 @@ std::string Renderer::renderCountPlot(
             << escapeXML(note.text) << "</text>\n";
     }
 
+    svg << axisLabels(width, height, "Programme", "Frequency");
     svg << svgEnd();
     return svg.str();
 }
@@ -218,6 +235,7 @@ std::string Renderer::renderHistogram(
             << escapeXML(note.text) << "</text>\n";
     }
 
+    svg << axisLabels(width, height, "Marks", "Frequency");
     svg << svgEnd();
     return svg.str();
 }
@@ -308,6 +326,7 @@ std::string Renderer::renderKDE(
             << escapeXML(note.text) << "</text>\n";
     }
 
+    svg << axisLabels(width, height, "Marks", "Density");
     svg << svgEnd();
     return svg.str();
 }

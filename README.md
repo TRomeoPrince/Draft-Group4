@@ -1,173 +1,64 @@
-# Draft Group 4 — C++ Data Visualization Library
+# Group 4 — C++ Data Visualization Library (Draft)
 
-This repository is a complete reference implementation for Group 4's C++ Object-Oriented Programming project.
+This is a working reference for the group's Object-Oriented Programming project.
+It is designed to show how reusable C++ modules work together to produce SVG graphs.
 
-The library demonstrates the full flow:
+## Project plan
 
-```
-CSV / raw data
-      |
-      v
-DataLoader
-      |
-      v
-DataProcessor
-      |
-      v
-Statistics
-      |
-      +----------------+----------------+
-      |                |                |
-      v                v                v
-  CountPlot        Histogram         KDEPlot
-      |                |                |
-      +----------------+----------------+
-                       |
-                       v
-                 Axis scaling
-                       |
-                       v
-                  Annotation
-                       |
-                       v
-                    Renderer
-                       |
-                       v
-                 ImageExporter
-                       |
-                       v
-                   SVG image
+The project is divided into ten modules:
+
+- **DataLoader** reads CSV files.
+- **DataProcessor** cleans the data and converts text to numbers.
+- **Statistics** calculates mean, median, minimum, maximum, variance and standard deviation.
+- **CountPlot** counts category frequencies.
+- **Histogram** groups numerical values into bins.
+- **KDEPlot** estimates a smooth density curve.
+- **Axis** scales data values to drawing positions and generates ticks.
+- **Annotation** stores extra text labels for the graphs.
+- **Renderer** combines plot data, scales, axes, labels and annotations into SVG.
+- **ImageExporter** writes the SVG image to disk.
+
+The plotting modules reuse the Renderer and Axis logic. We do not draw a new
+axis or write a new SVG exporter in every example.
+
+## Folder structure
+
+```text
+include/       Ten public C++ headers
+src/           Ten matching C++ implementation files
+data/input/    sample.csv
+data/output/   For generated images if desired
+examples/      Three complete plot demonstrations plus one all-in-one demo
+tests/         Ten individual module tests plus one integration test
+CMakeLists.txt  Build setup and CTest registration
 ```
 
-## Project structure
+### Examples — finished graphs
 
-```
-Draft-Group4/
-├── include/
-│   ├── DataLoader.hpp
-│   ├── DataProcessor.hpp
-│   ├── Statistics.hpp
-│   ├── CountPlot.hpp
-│   ├── Histogram.hpp
-│   ├── KDEPlot.hpp
-│   ├── Axis.hpp
-│   ├── Annotation.hpp
-│   ├── Renderer.hpp
-│   └── ImageExporter.hpp
-├── src/
-│   ├── DataLoader.cpp
-│   ├── DataProcessor.cpp
-│   ├── Statistics.cpp
-│   ├── CountPlot.cpp
-│   ├── Histogram.cpp
-│   ├── KDEPlot.cpp
-│   ├── Axis.cpp
-│   ├── Annotation.cpp
-│   ├── Renderer.cpp
-│   └── ImageExporter.cpp
-├── tests/
-│   └── test_library.cpp
-├── examples/
-│   └── example.cpp
-├── data/
-│   ├── input/
-│   │   └── sample.csv
-│   └── output/
-│       └── README.md
-├── CMakeLists.txt
-└── .gitignore
-```
+- `histogram_example.cpp`: CSV → cleaning → binning → title, axes, annotation → SVG.
+- `kdeplot_example.cpp`: CSV → cleaning → KDE density → title, axes, annotation → SVG.
+- `countplot_example.cpp`: CSV → cleaning → category counts → title, axes, annotation → SVG.
+- `complete_library_example.cpp`: runs the complete flow and creates all three plots.
 
-## What each module does
+Each example calls the library modules it needs. The Renderer handles the
+drawing, including axes and scales, while ImageExporter saves the finished image.
+They are demonstrations for users of the library, not unit tests.
 
-- **DataLoader** — reads CSV data into C++.
-- **DataProcessor** — trims, cleans, extracts columns and converts text values to numbers.
-- **Statistics** — calculates count, mean, minimum, maximum, median, variance and standard deviation.
-- **CountPlot** — counts how many times each category appears.
-- **Histogram** — groups numerical values into bins and counts values in each bin.
-- **KDEPlot** — estimates a smooth probability-density curve.
-- **Axis** — maps real data values to positions on a drawing area and can generate tick values.
-- **Annotation** — stores labels or notes to place on a graph.
-- **Renderer** — turns calculated plot data into SVG graphics.
-- **ImageExporter** — saves the rendered SVG text to an image file.
+### Tests — prove the code works
 
-## Shared-code idea
+There is one individual test per module:
+`test_dataloader`, `test_dataprocessor`, `test_statistics`,
+`test_histogram`, `test_kdeplot`, `test_countplot`, `test_axis`,
+`test_annotation`, `test_renderer`, and `test_imageexporter`.
 
-The files are separate, but they are connected.
+`test_integration` loads the sample CSV, prepares the data, calculates all
+three plots, renders the SVGs and checks that they can be saved correctly.
 
-For example:
+These are the two levels of testing: **individual** and **whole-library**.
 
-- Renderer uses Axis for coordinate scaling.
-- Renderer consumes output from CountPlot, Histogram and KDEPlot.
-- Histogram and KDEPlot use numerical data prepared by DataProcessor.
-- ImageExporter saves what Renderer produces.
+## Build and run
 
-This avoids rewriting the same logic in several modules.
-
-## Build
-
-Requirements:
-
-- C++17-compatible compiler
-- CMake 3.16 or newer
-
-From the repository root:
-
-```bash
-cmake -S . -B build
-cmake --build build
-```
-
-## Run the example
-
-```bash
-./build/dataviz_example
-```
-
-On Windows with some CMake generators, the executable may be inside:
-
-```
-build/Debug/dataviz_example.exe
-```
-
-The example writes SVG plot files into the current working directory.
-
-## Run tests
-
-```bash
-ctest --test-dir build --output-on-failure
-```
-
-## Notes
-
-This is deliberately written using only the C++ standard library. SVG is used for image output so the project can demonstrate rendering and image export without requiring a large external graphics dependency.
-
-Weekly reports are intentionally not included in this draft reference repository.
-
-
-## Individual module examples and tests
-
-The original `examples/example.cpp` demonstrates the complete library. The following
-standalone examples make it easier to learn and present individual modules:
-
-- `examples/axis_example.cpp`: numerical axis scaling and ticks.
-- `examples/statistics_example.cpp`: descriptive statistics.
-- `examples/kdeplot_example.cpp`: KDE estimation, SVG rendering, and export to `kde_example.svg`.
-
-After building, run the desired executable from the build folder, or use its
-generator-specific path (for example `build/Debug/kdeplot_example.exe` on Windows).
-
-CTest now runs five separately reported test executables:
-
-| Test | What it covers |
-| --- | --- |
-| `dataviz_tests` | Existing cross-module behavior and rendering checks |
-| `test_kdeplot` | KDE point count, finite nonnegative densities, ordering, bandwidth, invalid inputs |
-| `test_axis` | Scaling, tick spacing, range updates, and invalid inputs |
-| `test_statistics` | Descriptive calculations, sample values, and empty input |
-| `test_components` | Annotation, count plot, histogram, data processing/loading, renderer, SVG export |
-
-Run everything with:
+Requirements: a C++17 compiler and CMake 3.16 or newer.
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
@@ -175,36 +66,34 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-The `.github/workflows/ci.yml` workflow also builds and runs the test suite
-on GitHub for pushes and pull requests.
-
-**Note:** These files demonstrate the current implementations; the standalone
-modules still require further integration and additional edge-case tests before
-this reference library should be considered production-ready.
-
-## Complete per-module examples and tests
-
-Every one of the ten modules now has its own pair of entry-point files:
-
-| Module | Example | Test |
-| --- | --- | --- |
-| DataLoader | `examples/dataloader_example.cpp` | `tests/test_dataloader.cpp` |
-| DataProcessor | `examples/dataprocessor_example.cpp` | `tests/test_dataprocessor.cpp` |
-| Statistics | `examples/statistics_example.cpp` | `tests/test_statistics.cpp` |
-| CountPlot | `examples/countplot_example.cpp` | `tests/test_countplot.cpp` |
-| Histogram | `examples/histogram_example.cpp` | `tests/test_histogram.cpp` |
-| KDEPlot | `examples/kdeplot_example.cpp` | `tests/test_kdeplot.cpp` |
-| Axis | `examples/axis_example.cpp` | `tests/test_axis.cpp` |
-| Annotation | `examples/annotation_example.cpp` | `tests/test_annotation.cpp` |
-| Renderer | `examples/renderer_example.cpp` | `tests/test_renderer.cpp` |
-| ImageExporter | `examples/imageexporter_example.cpp` | `tests/test_imageexporter.cpp` |
-
-The full-library demo (`example.cpp`) and original integration tests (`test_library.cpp` and `test_components.cpp`) are retained.
-
-Build and test:
+For Linux and single-config CMake builds, open the build folder and run:
 
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-cmake --build build
-ctest --test-dir build --output-on-failure
+cd build
+./histogram_example
+./kdeplot_example
+./countplot_example
+./complete_library_example
 ```
+
+On Windows with a multi-configuration generator, executables may be inside
+`build/Debug/`. Launch them with the working directory set to `build/`,
+where CMake has copied `data/input/sample.csv`.
+
+The examples write files such as `histogram_example.svg`, `kdeplot_example.svg`
+and `countplot_example.svg` into the current working directory.
+
+## OOP design notes
+
+Classes such as Axis and Annotation use private data and public methods
+(encapsulation). Many other modules expose static functions for reusable tasks.
+The current code does **not** demonstrate class inheritance or virtual-method
+polymorphism; do not claim those concepts are implemented until they are added.
+
+The comments in each header and source file explain the working ideas and
+calculations in straightforward language, so every group member can discuss
+and verify their module. AI assistance should be acknowledged accurately in
+the individual or group report where applicable.
+
+This draft is a reference copy; it does not automatically change the group's
+official repository.

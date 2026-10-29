@@ -8,8 +8,11 @@
 
 #include <string>
 
+// The Renderer turns the calculated plot values into SVG drawings.
+// The different graphs should reuse Axis and Annotations where needed.
 class Renderer {
 public:
+    // The rest of the library will use this public interface.
     static std::string renderCountPlot(
         const CountPlot::Counts& counts,
         int width = 800,

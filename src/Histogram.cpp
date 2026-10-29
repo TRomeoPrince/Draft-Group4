@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+// I find the range and bin width before counting the values.
 std::vector<HistogramBin> Histogram::build(
     const std::vector<double>& data,
     std::size_t binCount
@@ -36,6 +37,7 @@ std::vector<HistogramBin> Histogram::build(
         bins.push_back({lower, upper, 0});
     }
 
+    // A value on the final boundary must still count in the last bin.
     for (double value : data) {
         std::size_t index = static_cast<std::size_t>(
             (value - minValue) / binWidth
