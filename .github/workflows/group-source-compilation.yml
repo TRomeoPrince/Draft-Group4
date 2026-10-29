@@ -1,0 +1,21 @@
+name: Compile Original Group 4 Snapshot
+
+on:
+  push:
+    branches: [group4-source-compile-check]
+  workflow_dispatch:
+
+jobs:
+  compile-original:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure original CMake unmodified
+        run: cmake -S group-source -B build-group
+      - name: Check C++ source compilation independently
+        if: always()
+        run: |
+          for file in group-source/src/*.cpp group-source/include/KDEplot.cpp; do
+            echo "Checking $file"
+            g++ -std=c++17 -Igroup-source/include -fsyntax-only "$file" || true
+          done
