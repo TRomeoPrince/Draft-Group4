@@ -21,8 +21,8 @@ add_library(dataviz
 )
 target_include_directories(dataviz PUBLIC include)
 
-// This points to the repository's actual output folder, even when an example
-// is launched from build/ or build/Debug on another computer.
+# This points to the repository's actual output folder, even when an example
+# is launched from build/ or build/Debug on another computer.
 target_compile_definitions(dataviz PRIVATE
     DATAVIZ_DEFAULT_OUTPUT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data/output"
 )
