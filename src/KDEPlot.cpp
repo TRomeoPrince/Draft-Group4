@@ -10,6 +10,7 @@ namespace {
 constexpr double PI = 3.14159265358979323846;
 }
 
+// This kernel provides one bell-shaped contribution to the density.
 double KDEPlot::gaussianKernel(double u) {
     return std::exp(-0.5 * u * u) / std::sqrt(2.0 * PI);
 }
@@ -58,6 +59,7 @@ std::vector<KDEPoint> KDEPlot::estimate(
     std::vector<KDEPoint> points;
     points.reserve(pointCount);
 
+    // Calculate the density at each point so the Renderer can join them.
     for (std::size_t i = 0; i < pointCount; ++i) {
         double x = start + static_cast<double>(i) * step;
         double densitySum = 0.0;

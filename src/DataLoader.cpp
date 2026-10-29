@@ -4,6 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 
+// Read the file line by line and separate each line into its columns.
 DataLoader::Table DataLoader::loadCSV(const std::string& filePath, char delimiter) {
     std::ifstream file(filePath);
 

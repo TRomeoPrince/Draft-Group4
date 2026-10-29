@@ -20,6 +20,7 @@ std::string number(double value, int precision = 2) {
 }
 }
 
+// I keep the plotting margins in one place so the graphs use the same layout.
 std::string Renderer::escapeXML(const std::string& text) {
     std::string result;
 

@@ -3,6 +3,7 @@
 #include <cctype>
 #include <stdexcept>
 
+// We remove extra spaces so that the data can be converted properly.
 std::string DataProcessor::trim(const std::string& value) {
     std::size_t start = 0;
     while (start < value.size() &&
@@ -76,6 +77,7 @@ std::vector<double> DataProcessor::toNumeric(
             throw std::invalid_argument("Empty value cannot be converted to a number.");
         }
 
+        // The caller can decide to skip invalid text or receive an error.
         try {
             std::size_t used = 0;
             double number = std::stod(value, &used);

@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+// I check the data range first so the scale formula cannot divide by zero.
 Axis::Axis(
     double minValue,
     double maxValue,
@@ -18,6 +19,7 @@ Axis::Axis(
 }
 
 double Axis::scale(double value) const {
+    // Find the fraction of the data range, then map it onto the screen range.
     return screenStart +
            (value - minValue) *
            (screenEnd - screenStart) /
@@ -32,6 +34,7 @@ std::vector<double> Axis::ticks(std::size_t count) const {
     std::vector<double> values;
     values.reserve(count);
 
+    // We have one fewer interval than the number of tick marks.
     double step = (maxValue - minValue) /
                   static_cast<double>(count - 1);
 

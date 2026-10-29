@@ -13,6 +13,7 @@ void ensureNotEmpty(const std::vector<double>& data) {
 }
 }
 
+// The functions here calculate values used by the different graphs.
 std::size_t Statistics::count(const std::vector<double>& data) {
     return data.size();
 }
@@ -35,6 +36,7 @@ double Statistics::maximum(const std::vector<double>& data) {
 
 double Statistics::median(std::vector<double> data) {
     ensureNotEmpty(data);
+    // Sorting a copy means we do not change the caller's original values.
     std::sort(data.begin(), data.end());
 
     std::size_t middle = data.size() / 2;
